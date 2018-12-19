@@ -1,0 +1,56 @@
+{% extends 'Reception/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="image">
+        <img src="{% static 'images/banner.jpg' %}" alt="">
+    </div>
+    <div class="container">
+     <form class="navbar-form navbar-left" action="{% url 'goods:goods_search' %}" method="post">
+         {% csrf_token %}
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="输入你要搜索的内容" name="text">
+        </div>
+        <button type="submit" class="btn btn-default">搜索</button>
+      </form>
+    </div>
+    <div class="container zhong clear">
+    {% for i in list %}
+    <div>
+        <div>
+            <a href="{% url 'dtpage:dtpage' i.goods_id %}"><img src="{% static i.goods_pic %}" alt=""></a>
+        </div>
+        <p><a href="{% url 'dtpage:dtpage' i.goods_id %}">{{ i.goods_name }}</a></p>
+        <p><del class="re_gd_pc">￥{{ i.goods_oprice }}元</del>&nbsp;&nbsp;<span>￥{{ i.goods_xprice }}元</span></p>
+        {% for li in count %}
+            {% if i.goods_id == li.goods_id %}
+    <p class="gs_num">已有<span>{{ li.num }}</span>人购买</p>
+            {% endif %}
+            {% endfor %}
+    </div>
+        {% endfor %}
+    </div>
+    <div class="container">
+        {% if list.has_previous %}
+        <a class="btn btn-default" href="/goods?page={{ list.previous_page_number }}" role="button">上一页</a>
+    {% endif %}
+    {% if list.has_next %}
+        <a class="btn btn-default" href="/goods?page={{ list.next_page_number }}" role="button">下一页</a>
+    {% endif %}
+    <div>
+    当前第{{ count1 }}页，共{{ list.paginator.num_pages }}页 <input type="text" class="gd_search" id="gd_input">  <a class="btn btn-default" href="#" role="button" id="fanyi">翻页</a>
+    </div>
+    </div>
+    <script>
+        $(function(){
+            $('#fanyi').click(function(){
+                var a=$('#gd_input').val()
+                if(a>{{ list.paginator.num_pages }}){
+                    a={{ list.paginator.num_pages }}
+                }
+                str="/goods?page="+a
+                $('#fanyi').attr('href',str)
+                console.log(str)
+            })
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,175 @@
+{% extends 'Backstage/goods_base.html' %}
+{% load static %}
+{% block right %}
+<div class="x-body layui-anim layui-anim-up">
+        <form class="layui-form" action="{% url 'manage:manage_modify_han' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+          <div class="layui-form-item">
+              <label for="L_email" class="layui-form-label">
+                  <span class="x-red">*</span>商品编号
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_email" name="goods_num" required=""
+                  autocomplete="off" class="layui-input" value="{{ list.goods_num }}">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="L_username" class="layui-form-label">
+                  <span class="x-red">*</span>商品名称
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_username" name="goods_name" required=""
+                  autocomplete="off" class="layui-input" value="{{ list.goods_name }}">
+                   <input type="hidden" id="L_username" name="goods_id" required=""
+                  autocomplete="off" class="layui-input" value="{{ list.goods_id }}">
+              </div>
+          </div>
+            <div class="layui-form-item">
+              <label for="L_username" class="layui-form-label">
+                  <span class="x-red">*</span>商品类型
+              </label>
+              <div class="layui-input-inline">
+                  <select name="goods_leibie" id="">
+                      {% for i in list1 %}
+                      <option value="{{ i.type_id }}">{{ i.type_name }}</option>
+                      {% endfor %}
+                  </select>
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="L_pass" class="layui-form-label">
+                  <span class="x-red">*</span>商品原价
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_pass" name="goods_oprice" required=""
+                  autocomplete="off" class="layui-input" value="{{ list.goods_oprice }}">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+                  <span class="x-red">*</span>商品现价
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_repass" name="goods_xprice" required=""
+                  autocomplete="off" class="layui-input" value="{{ list.goods_xprice }}">
+              </div>
+          </div>
+		  <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+                  <span class="x-red">*</span>商品库存
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_repass" name="goods_count" required=""
+                  autocomplete="off" class="layui-input" value="{{ list.goods_count }}">
+              </div>
+          </div>
+		  <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+                  <span class="x-red">*</span>存储方法
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_repass" name="goods_method" required=""
+                  autocomplete="off" class="layui-input" value="{{ list.goods_method }}">
+              </div>
+          </div>
+		  <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+                  <span class="x-red">*</span>商品介绍
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_repass" name="goods_infro" required=""
+                  autocomplete="off" class="layui-input" value="{{ list.goods_infro }}">
+              </div>
+          </div>
+       <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+                  <span class="x-red">*</span>是否上架
+              </label>
+              <div class="radio">
+                  <label>
+                <input type="radio" name="goods_ishow" id="optionsRadios2" value="1">是
+              </label>
+                <label>
+                <input type="radio" name="goods_ishow" id="optionsRadios2" value="0">否
+              </label>
+              </div>
+          </div>
+        <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+                  <span class="x-red">*</span>目前商品图片
+              </label>
+              <div class="layui-input-inline">
+                  <div class="gd_ad_md" id="gd_ad_md">
+                  <img src="{% static list.goods_pic %}" alt="" id="#img_preview">
+                  </div>
+              </div>
+          </div>
+		  <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+                  <span class="x-red">*</span>商品缩略图
+              </label>
+              <div class="layui-input-inline">
+                  <input type="file" id="L_repass" name="userfiles" required=""
+                  autocomplete="off" class="layui-input" value="{{ list.goods_pic }}">
+              </div>
+          </div>
+		  <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+                  <span class="x-red">*</span>配送地址
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_repass" name="goods_address" required=""
+                  autocomplete="off" class="layui-input" value="{{ list.goods_address }}">
+              </div>
+          </div>
+		  <div class="layui-form-item layui-form-text">
+                    <label for="desc" class="layui-form-label">
+                        商品内容
+                    </label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入内容" id="desc" name="goods_content" class="layui-textarea" >{{ list.goods_body }}</textarea>
+                    </div>
+                </div>
+        <script>
+                                  KindEditor.ready(function(K) {
+        K.create('textarea[name=goods_content]', {
+        //create 括号中的内容为获取textarea的这个文本域 你可以使用CSS选择器获取
+        // 如:create(#xxx) #xxx 对应 textarea id= 'xxx' ,这个id在当前页面只能存在1个
+        // 或create(textarea) 条件是当前页面当中只存在1个 textarea
+        //花括号存放富文本配置信息 如 width:600px
+        width:'660px;',
+        height:'300px;',
+        });
+        });
+                      </script>
+          <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+              </label>
+              <button  class="layui-btn" lay-filter="add" lay-submit="">
+                  修改
+              </button>
+
+          </div>
+      </form>
+    </div>
+    <script>
+    $(function(){
+        //上传图片选择文件改变后刷新预览图
+        $("#zx_img").change(function (e) {
+        //获取目标文件
+        var file = e.target.files || e.dataTransfer.files;
+        //如果目标文件存在
+        if (file) {
+        //定义一个文件阅读器
+        var reader = new FileReader();
+        //文件装载后将其显示在图片预览里
+        reader.onload = function () {
+        $("#img_preview").attr("src", this.result);
+        };
+        //装载文件
+        reader.readAsDataURL(file[0]);
+        }
+        });
+    })
+    </script>
+{% endblock %}

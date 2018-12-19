@@ -1,0 +1,35 @@
+{% extends 'Backstage/goods_base.html' %}
+{% block right %}
+    <h2>发送邮件</h2>
+    <hr>
+     <form class="layui-form" action="{% url 'manage:manage_member_han' %}" method="post">
+        {% csrf_token %}
+          <div class="layui-form-item">
+              <label for="L_email" class="layui-form-label">
+                  <span class="x-red">*</span>标题
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_email" name="header" required=""
+                  autocomplete="off" class="layui-input">
+              </div>
+          </div>
+              <div class="layui-form-item">
+              <label for="L_email" class="layui-form-label">
+                  <span class="x-red">*</span>正文
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_email" name="text" required=""
+                  autocomplete="off" class="layui-input">
+              </div>
+          </div>
+         <input type="hidden" name="id" value="{{ id }}">
+         <div class="layui-form-item">
+              <label for="L_email" class="layui-form-label">
+                  <span class="x-red"></span>
+              </label>
+              <div class="layui-input-inline">
+                  <input type="submit" value="发送">
+              </div>
+          </div>
+     </form>
+{% endblock %}

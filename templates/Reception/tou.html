@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="tou clear">
+    <ul>
+        <li><a href="{% url 'shop:shop_open' %}">[免费开店]</a></li>
+        {% if request.session.user %}
+            <li><a href="{% url 'shopping:shopping_user' %}">[购物车]</a></li>
+            <li>欢迎会员：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'users:user_order' %}">{{ request.session.user }}</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'users:login_quit' %}">退出</a></li>
+            <div class="home_logo"><img src="{% static request.session.user_pic %}" alt=""></div>
+            <li><a href="{% url 'manage:manage_shop_home' %}">[我的店铺]</a></li>
+        {% else %}
+        <li><a href="{% url "users:register" %}">[注册有惊喜]</a></li>
+            {% if request.path == '/login/' %}
+                <li><a href="">[登录]</a></li>
+                {% else %}
+        <li><a href="{% url "users:login"%}?next={{ request.path }}">[登录]</a></li>
+                {% endif %}
+        {% endif %}
+    </ul>
+</div>
+<div class="container">
+<div class="bar">
+    <img src="{% static 'images/logo.png' %}" alt="">
+    <div class="barleft">
+        <ul>
+            <li><a href="{% url 'goods:goods' %}">首页</a><a href="{% url 'type:type_home' %}">鲜果</a><a href="{% url 'users:user_order' %}">会员中心</a><a href="{% url 'shop:shop_list' %}">店铺</a></li>
+            <li><span>Home</span><span>Fruit</span><span>VIP Club</span><span>Shop</span></li>
+        </ul>
+
+    </div>
+</div>
+</div>
+</body>
+</html>

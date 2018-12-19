@@ -1,0 +1,21 @@
+{% extends 'Reception/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+ <div class="list-group">
+  <a href="#" class="list-group-item active">
+    店铺大全
+  </a>
+</div>
+<div class="container zhong clear">
+    {% for i in list %}
+    <div>
+        <div>
+            <a href="{% url 'shop:shop_list_home' i.manage_shop_id %}"><img src="{% static i.manage_shop_pic %}" alt=""></a>
+        </div>
+        <p><a href="{% url 'shop:shop_list_home' i.manage_shop_id %}">{{ i.manage_shop_name }}</a></p>
+    </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

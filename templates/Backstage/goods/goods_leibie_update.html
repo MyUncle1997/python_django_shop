@@ -1,0 +1,30 @@
+{% extends 'Backstage/goods_base.html' %}
+{% block right %}
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="#">商品管理</a>
+        <a href="#">增加类型</a>
+      </span>
+    </div>
+    <div class="x-body">
+      <table class="layui-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>分类名</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+        <form action="{% url 'manage:leibie_modify_han' %}" method="post">
+            {% csrf_token %}
+          <tr>
+            <td>{{ list.leibie_id }}</td>
+			<td><input type="text" value="{{ list.type_name }}" name="name"></td>
+            <td><input type="submit" value="提交"></td>
+              <input type="hidden" value="{{ list.type_id }}" name="id">
+          </tr>
+        </form>
+        </tbody>
+      </table>
+    </div>
+{% endblock %}

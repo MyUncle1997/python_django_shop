@@ -1,0 +1,34 @@
+{% extends 'Backstage/goods_base.html' %}
+{% block right %}
+    <h2>物流填写</h2>
+    <hr>
+    <form class="form-horizontal" action="{% url 'manage:manage_logistics_han' %}" method="post">
+    {% csrf_token %}
+     <div class="form-group">
+    <label for="inputEmail3" class="col-sm-1 control-label">物流填写：</label>
+    <div class="col-sm-2">
+      <select name="name" id="" class="form-control">
+            <option value="圆通快递">圆通快递</option>
+            <option value="天天快递">天天快递</option>
+            <option value="顺丰快递">顺丰快递</option>
+            <option value="韵达快递">韵达快递</option>
+            <option value="邮政快递">邮政快递</option>
+            <option value="中通快递">中通快递</option>
+            <option value="申通快递">申通快递</option>
+        </select>
+    </div>
+  </div>
+        <div class="form-group">
+    <label for="inputEmail3" class="col-sm-1 control-label">单号填写：</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="inputEmail3" placeholder="填写你的单号" name="num">
+    </div>
+  </div>
+    <div class="form-group">
+    <div class="col-sm-offset-1 col-sm-10">
+      <button type="submit" class="btn btn-danger">提交</button>
+    </div>
+  </div>
+        <input type="hidden" value="{{ id }}" name="id">
+    </form>
+{% endblock %}

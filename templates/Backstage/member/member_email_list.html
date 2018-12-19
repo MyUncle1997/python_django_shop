@@ -1,0 +1,22 @@
+{% extends 'Backstage/goods_base.html' %}
+{% block right %}
+    <h2>邮箱管理</h2>
+    <hr>
+    <table class="table table-bordered">
+    <tr class="success">
+        <th>会员id</th>
+        <th>会员昵称</th>
+        <th>邮箱标题</th>
+        <th>邮箱内容</th>
+        <th>会员邮箱</th>
+    </tr>
+        {% for i in sum %}
+    <tr>
+        <td>{{ i.user_id }}</td>
+        <td>{{ i.user.username }}</td>
+        <td>{{ i.email_title }}</td>
+        <td>{{ i.email_body }}</td>
+         <td>{{ i.user.email }}</td>
+    {% endfor %}
+    </table>
+{% endblock %}

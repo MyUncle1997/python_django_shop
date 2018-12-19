@@ -1,0 +1,42 @@
+{% extends 'Reception/base.html' %}
+{% block content %}
+<div class="container">
+<h1>你付款的订单已提交，我们会尽快为你发货</h1>
+    <hr>
+    <table class="table">
+    <tr>
+        <th>订单编号</th>
+        <th>下单时间</th>
+        <th>应付总金额</th>
+        <th>收货地址：</th>
+        <th>买家昵称</th>
+    </tr>
+        <form method="post" action="{% url 'play:play_shopping' %}">
+        {% csrf_token %}
+            {% for list in list1 %}
+    <tr class="active sp_number">
+        <td>{{ list.order_num }}</td>
+         <td>{{ list.order_time }}</td>
+         <td>￥{{ list.order_sum }}元</td>
+        {% for i in address %}
+            {% if list.address_id == i.address_id %}
+         <td>{{ i.address_name }}</td>
+            {% else %}
+            {% endif %}
+            {% endfor %}
+         <td>{{ request.session.user }}</td>
+    </tr>
+            {% endfor %}
+    </table>
+    <div>
+        <a class="btn btn-success" href="{% url 'users:user_order'%}" role="button">查看订单详情</a>
+</div>
+{% for list in list1 %}
+    <input type="hidden" value="{{ list.order_id }}"name="id">
+{% endfor %}
+    <div class="right_btn">
+<input value="支付宝支付" type="submit" class="btn btn-success">
+</div>
+</form>
+</div>
+{% endblock %}

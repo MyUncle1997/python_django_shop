@@ -1,0 +1,95 @@
+{% extends 'Reception/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+    <div class="row">
+        <div class="col-md-2">
+<ul class="list-group">
+  <li class="list-group-item">
+    <span class="badge">会员：{{ request.session.user }}</span>
+      <a href="{% url 'users:user_order'%}">我的订单</a>
+  </li>
+    <li class="list-group-item">
+    <span class="badge"></span>
+      <a href="{% url 'users:user_modify' %}">密码修改</a>
+  </li>
+    <li class="list-group-item">
+    <span class="badge"></span>
+      <a href="{% url 'users:user_address' %}">收货地址</a>
+  </li>
+        <li class="list-group-item">
+    <span class="badge"></span>
+      <a href="{% url 'users:user_core' %}">个人信息</a>
+  </li>
+    <li class="list-group-item">
+    <span class="badge"></span>
+      <a href="{% url 'users:user_collection' %}">我的收藏</a>
+  </li>
+</ul>
+        </div>
+                <div class="col-md-10">
+    <div class="user_tou_home clear">
+        <div>商品</div>
+        <div>名称</div>
+        <div>单价</div>
+        <div>数量</div>
+        <div>实付金额</div>
+        <div>订单操作</div>
+    </div>
+                    <br>
+                    <div class="list-group">
+{#  <span href="#" class="list-group-item default user_show clear">#}
+{#    <span>日期：{{ list.oreder_time }}</span><span>订单编号：{{ list.oreder_num }}</span><a href="#">查看详情</a>#}
+{#  </span>#}
+                                                            {% for list in list %}
+                                                                <span href="#" class="list-group-item default user_show clear">
+    <span>日期：{{ list.order_time }}</span><span>订单编号：{{ list.order_num }}</span>
+ {% if list.order_state == 10 %}
+     <span>订单状态：等待支付</span>
+      <a href="{% url 'play:pay_continue' list.order_id %}">去付款</a>
+  {% elif list.order_state == 0 %}
+  <span>发货状态：待发货</span>
+  {% elif list.order_state == 1 %}
+  <span>发货状态：已发货</span>
+      <span>操作：<a href="{% url 'users:user_order_logistics' list.order_id %}">查看物流</a>&nbsp;&nbsp;<a href="{% url 'users:user_order_confirm' list.order_id %}">确认收货</a></span>
+      {% elif list.order_state == 2 %}
+      <span>发货状态：已确认收货</span>
+       <span>操作：<a href="{% url 'users:user_comment' list.order_id %}">我要评价</a>
+      {% else %}
+      <span>发货状态：已确认收货</span>
+      <a href="{% url 'users:user_comment_body' list.order_id%}">查看评价内容</a>
+      {% endif %}
+  <a href="{% url 'users:user_order_pg' list.order_id %} " class="user_or_pg">查看详情</a>
+</span>
+                                                                </span>
+
+                                                                                            {% for i in num %}
+                                                                                                {% if list.shop_id == i.shop_id and list.order_id == i.order_id %}
+                                <div class="user_page_home clear">
+                                <div><img src="{% static i.goods_pic %}" alt=""></div>
+                                <div>{{ i.goods_name }}</div>
+                                <div>{{ i.manage_price }}</div>
+                                <div>{{ i.goods_num }}</div>
+                                <div>{{ i.goods_sum }}</div>
+                                {% if list.order_state == 10 %}
+                                    <div>等待支付</div>
+                                    {% elif list.order_state == 0 %}
+                                     <div>等待卖家发货</div>
+                                    {% elif list.order_state == 2 %}
+                                <div>待评价</div>
+      {% elif list.order_state == 3 %}
+      <div>已评价</div>
+                                        {% else %}
+                                        <div>待收货</div>
+      {% endif %}
+{#                                <div>{{ i.goods_sum }}</div>#}
+                                </div>
+                                                                                                {% else %}
+                                                                                                {% endif %}
+                            {% endfor %}
+                                    {% endfor %}
+</div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

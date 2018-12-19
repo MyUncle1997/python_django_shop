@@ -1,0 +1,11 @@
+{% extends 'Reception/base.html' %}
+{% block content %}
+    <div class="container">
+    <ul class="list-group">
+  <li class="list-group-item active">亲爱的用户你还没有激活，还差一步就可以成为我们的会员，马上重新激活你的账号吧</li>
+</ul>
+    <ul class="list-group info">
+     <a href="{% url 'users:user_activation_han' %}" target="_blank" class="list-group-item">点击我,再来一次</a>
+</ul>
+    </div>
+{% endblock %}

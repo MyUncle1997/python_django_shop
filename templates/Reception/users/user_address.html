@@ -1,0 +1,22 @@
+{% extends 'Reception/users/user_base.html' %}
+{% block content_user %}
+    <div class="list-group">
+  <a href="{% url 'users:user_address_add' %}" class="list-group-item active">
+      我要添加收货地址
+  </a>
+</div>
+    <div class="row">
+    {% for i in list %}
+    <div class="col-md-6">
+    <ul class="list-group">
+  <li class="list-group-item active">收货人：{{ i.address_username }}</li>
+  <li class="list-group-item">联系电话：{{ i.address_phone }}</li>
+  <li class="list-group-item">地址：{{ i.address_name }}</li>
+  <li class="list-group-item"><a href="{% url 'users:user_address_modify' i.address_id%}">修改</a>&nbsp;&nbsp;&nbsp;<a href="{% url 'users:user_address_del' i.address_id%}">删除</a></li>
+</ul>
+        </div>
+        {% empty %}
+        还没有收货地址，赶紧去添加吧
+    {% endfor %}
+    </div>
+{% endblock %}

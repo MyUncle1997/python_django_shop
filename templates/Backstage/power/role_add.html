@@ -1,0 +1,82 @@
+{% extends 'Backstage/goods_base.html' %}
+{% block right %}
+ <div class="x-body layui-anim layui-anim-up">
+        <form class="layui-form" id="pw_from">
+            {% csrf_token %}
+ <div class="layui-form-item">
+              <label for="L_username" class="layui-form-label">
+                  <span class="x-red">*</span>角色名字
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_username" name="name" required="" lay-verify="nikename"
+                  autocomplete="off" class="layui-input">
+              </div>
+          </div>
+            <div class="layui-form-item">
+              <label for="L_username" class="layui-form-label">
+                  <span class="x-red">*</span>选择权限
+              </label>
+                {% for i in list %}
+              <div class="layui-input-inline">
+                  <input type="checkbox" name="id" value="{{ i.id }}">{{ i.power_name }}
+              </div>
+                {% endfor %}
+          </div>
+          <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+              </label>
+              <button  class="layui-btn" lay-filter="add" lay-submit="" id="pw_add">
+                  增加
+              </button>
+          </div>
+      </form>
+    </div>
+    <script>
+    layui.use(['form','layer'], function(){
+            $ = layui.jquery;
+          var form = layui.form
+          ,layer = layui.layer;
+
+          //自定义验证规则
+          form.verify({
+            nikename: function(value){
+              if(value.length < 2){
+                return '昵称至少得2个字符啊';
+              }
+            }
+          });
+
+          //监听提交
+          form.on('submit(add)', function(data){
+                  $.ajax({
+                type:'post',
+                url:'/manage_role_add/',
+                  data:$('#pw_from').serialize(),
+                success:function(ret){
+                    if(ret=='1'){
+                        layer.alert("增加成功", {icon: 6},function () {
+                // 获得frame索引
+                var index = parent.layer.getFrameIndex(window.name);
+                //关闭当前frame
+                parent.layer.close(index);
+            })
+                    parent.location.reload()
+                    }
+                        if (ret=='0'){
+                            layer.alert("增加失败", {icon: 6},function () {
+                // 获得frame索引
+                var index = parent.layer.getFrameIndex(window.name);
+                //关闭当前frame
+                parent.layer.close(index);
+            })
+                        }
+                    }
+            })
+            //发异步，把数据提交给python
+            return false;
+          });
+
+
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'Backstage/goods_base.html' %}
+{% block right %}
+ <div class="x-body layui-anim layui-anim-up">
+        <form class="layui-form" id="pw_from">
+            {% csrf_token %}
+ <div class="layui-form-item">
+              <label for="L_username" class="layui-form-label">
+                  <span class="x-red">*</span>权限名字
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_username" name="name" required="" lay-verify="nikename"
+                  autocomplete="off" class="layui-input">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="L_username" class="layui-form-label">
+                  <span class="x-red">*</span>权限路由
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_username" name="url" required="" lay-verify="nikename1"
+                  autocomplete="off" class="layui-input">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="L_pass" class="layui-form-label">
+                  <span class="x-red">*</span>命名空间
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_pass" name="namespace" required="" lay-verify="pass"
+                  autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-form-mid layui-word-aux">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+              </label>
+              <button  class="layui-btn" lay-filter="add" lay-submit="" id="pw_add">
+                  增加
+              </button>
+          </div>
+      </form>
+    </div>
+    <script>
+    layui.use(['form','layer'], function(){
+            $ = layui.jquery;
+          var form = layui.form
+          ,layer = layui.layer;
+
+          //自定义验证规则
+          form.verify({
+            nikename: function(value){
+              if(value.length < 2){
+                return '昵称至少得2个字符啊';
+              }
+            }
+          });
+
+          //监听提交
+          form.on('submit(add)', function(data){
+                  $.ajax({
+                type:'post',
+                url:'/manage_power_han/',
+                  data:$('#pw_from').serialize(),
+                success:function(ret){
+                    if(ret=='1'){
+                        layer.alert("增加成功", {icon: 6},function () {
+                // 获得frame索引
+                var index = parent.layer.getFrameIndex(window.name);
+                //关闭当前frame
+                parent.layer.close(index);
+            })
+                    parent.location.reload()
+                    }
+                        if (ret=='0'){
+                            layer.alert("增加失败", {icon: 6},function () {
+                // 获得frame索引
+                var index = parent.layer.getFrameIndex(window.name);
+                //关闭当前frame
+                parent.layer.close(index);
+            })
+                        }
+                    }
+            })
+            //发异步，把数据提交给python
+            return false;
+          });
+
+
+        });
+    </script>
+{% endblock %}

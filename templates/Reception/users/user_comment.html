@@ -1,0 +1,34 @@
+{% extends 'Reception/users/user_base.html' %}
+{% load static %}
+{% block content_user %}
+    <form action="{% url 'users:user_comment_han' %}" method="post">
+    {% csrf_token %}
+            <a href="{% url 'users:user_order' %}">我的订单</a>&nbsp;>&nbsp;评价内容
+<span href="#" class="list-group-item default user_show clear">
+    <span>日期：{{ list.order_time }}</span><span>订单编号：{{ list.order_num }}</span>
+</span>
+    <div class="user_tou clear">
+        <div>商品</div>
+        <div>名称</div>
+        <div>单价</div>
+        <div>商家</div>
+        <div>进行评价</div>
+    </div>
+             {% for i in num %}
+                                <div class="user_page clear">
+                                <div><img src="{% static i.goods_pic %}" alt=""></div>
+                                <div>{{ i.goods_name }}</div>
+                                <div>{{ i.manage_price }}</div>
+                                <div>{{ request.session.manage_user }}</div>
+                                <div><a class="btn btn-danger" href="#" role="button"></a></div>
+                                </div>
+        <input type="hidden" value="{{ list.order_id }}" name="id">
+        <textarea name="text" id="" cols="120" rows="10"></textarea>
+    <div class="form-group">
+        {% endfor %}
+    <div class="col-sm-offset-10 col-sm-2">
+      <button type="submit" class="btn btn-danger">一键评价</button>
+    </div>
+  </div>
+    </form>
+{% endblock %}

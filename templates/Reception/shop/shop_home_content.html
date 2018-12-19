@@ -1,0 +1,36 @@
+{% extends 'Reception/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+  <a href="{% url 'shop' %}" class="list-group-item active">
+    分类中心
+  </a>
+                {% for i in list %}
+  <a href="{% url 'shop:shop_home_content' i.shop_id i.type_id %}" class="list-group-item">{{ i.type_name }}</a>
+                {% empty %}
+ <a href="#" class="list-group-item">店铺已倒闭</a>
+                {% endfor %}
+</div>
+        </div>
+        <div class="col-md-10">
+         <ul class="list-group">
+  <li class="list-group-item active">每天的水果都是最新鲜的</li>
+</ul>
+             <div class="container type clear">
+                {% for i in goods %}
+    <div>
+        <div>
+            <a href="{% url 'dtpage:dtpage' i.goods_id %}"><img src="{% static i.goods_pic %}" alt=""></a>
+        </div>
+        <p><a href="{% url 'dtpage:dtpage' i.goods_id %}">{{ i.goods_name }}</a></p>
+        <p><del class="re_gd_pc">￥{{ i.goods_oprice }}元</del>&nbsp;&nbsp;<span>￥{{ i.goods_xprice }}元</span></p>
+    </div>
+                        {% endfor %}
+    </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'Backstage/goods_base.html' %}
+{% load static %}
+{% block right %}
+    <h2>订单详情</h2>
+    <hr>
+    <ul class="list-group">
+  <li class="list-group-item active">收货信息</li>
+  <li class="list-group-item">收货姓名：{{ address.address_username }}</li>
+  <li class="list-group-item">收货电话：{{ address.address_phone }}</li>
+  <li class="list-group-item">收货地址：{{ address.address_name }}</li>
+</ul>
+    <br>
+    <div class="user_tou clear">
+        <div>商品</div>
+        <div>名称</div>
+        <div>单价</div>
+        <div>数量</div>
+        <div>实付金额</div>
+    </div>
+         <span href="#" class="list-group-item default user_show clear">
+    {% if list.order_state == 0 %}
+                                                                         <span>订单日期：{{ list.order_time }}</span>
+                                                                             {% elif list.order_state == 1 %}
+                                                                             <span>发货日期：{{ list.send_time }}</span>
+                                                                             {% elif list.order_state == 2 %}
+                                                                             <span>收货日期：{{ list.recv_time }}</span>
+                                                                         {% endif %}<span>订单编号：{{ list.order_num }}
+  </span>
+         {% if list.order_state == 10 %}
+          <span>订单状态：待支付</span>
+           {% elif list.order_state == 0 %}
+  <span>发货状态：待发货</span>
+  {% elif list.order_state == 1 %}
+  <span>发货状态：已发货</span>
+      {% elif list.order_state == 2 %}
+      <span>发货状态：已确认收货</span>
+      {% else %}
+      <span>发货状态：已评价</span>
+      {% endif %}
+         <span>买家昵称：{{ name.username }}</span>
+         </span>
+             {% for i in num %}
+                                <div class="user_page clear">
+                                <div><img src="{% static i.goods_pic %}" alt=""></div>
+                                <div>{{ i.goods_name }}</div>
+                                <div>{{ i.manage_price }}</div>
+                                <div>{{ i.goods_num }}</div>
+                                <div>{{ i.goods_sum }}</div>
+                                </div>
+             {% endfor %}
+
+{#     <span class="user_pg_sum clear">订单金额总计：￥{{ sum }}元</span>#}
+{% endblock %}

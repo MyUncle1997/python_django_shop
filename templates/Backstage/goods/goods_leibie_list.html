@@ -1,0 +1,28 @@
+{% extends 'Backstage/goods_base.html' %}
+{% block right %}
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="#">商品管理</a>
+        <a href="#">增加类型</a>
+      </span>
+    </div>
+    <div class="x-body">
+      <table class="layui-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>分类名</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+        {% for i in list %}
+          <tr>
+            <td>{{ i.type_id }}</td>
+			<td>{{ i.type_name }}</td>
+            <td><a href="{% url 'manage:leibie_modify' i.type_id %}">编辑</a> <a href="{% url 'manage:manage_leibie_del' i.type_id %}">删除</a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+{% endblock %}

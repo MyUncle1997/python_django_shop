@@ -1,0 +1,61 @@
+{% extends 'Reception/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <form method="post" action="{% url 'order:order_han' %}">
+    {% csrf_token %}
+    <h2>
+        填写并核对订单信息
+    </h2>
+    <hr>
+    
+    <span>收货信息</span><a href="{% url 'order:order_address' %}">新增收货地址</a>
+{% for i in list_ad %}
+<div class="radio">
+  <label>
+    <input type="radio" name="address_id" id="optionsRadios1" value="{{ i.address_id }}" checked>
+      姓名：<span>{{ i.address_username }}</span>
+      电话：<span>{{ i.address_phone }}</span>
+      地址：<sapn>{{ i.address_name }}</sapn>
+  </label>
+    {% empty %}
+    <label for="">快去添加收货地址吧</label>
+</div>
+{% endfor %}
+    <h2 >
+        配送信息
+    </h2>
+    <hr>
+        <table class="table">
+    <tr class="or_table">
+        <th>商品名称</th>
+        <th>商品缩略图</th>
+        <th>商品单价</th>
+        <th>商品数量</th>
+        <th>商品小计</th>
+    </tr>
+            {% for i in list %}
+    <tr class="active or_table">
+        <td>{{ i.goods_name }}</td>
+         <td><div class="or_td_img"><img src="{% static i.goods_pic %}" alt=""></div></td>
+         <td>￥{{ i.goods_price }}元</td>
+         <td>{{ i.goods_num }}</td>
+         <td>￥{{ i.goods_sum }}元</td>
+    </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="5" rowspan="2" class="or_tdl"><a class="btn btn-danger" href="{% url 'shopping:shopping_user' %}" role="button">返回购物车修改</a></td>
+            </tr>
+            <tr></tr>
+            <tr ><td colspan="5" rowspan="2" class="or_tdl">总计：{{ sum }}元</td></tr>
+            <tr></tr>
+            <tr><td colspan="5" rowspan="2" class="or_tdl"><input type="submit" value="立刻下单" class="btn btn-success"></td></tr>
+            <tr></tr>
+    </table>
+</div>
+    <input type="hidden" name="sum" value="{{ sum }}">
+    {% for i in list %}
+        <input type="hidden" name="sp_id" value="{{ i.cart_id }}">
+    {% endfor %}
+    </form>
+{% endblock %}

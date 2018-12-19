@@ -1,0 +1,24 @@
+{% extends 'Reception/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+  <a href="#" class="list-group-item active">
+    分类中心
+  </a>
+  <a href="#" class="list-group-item">进口水果</a>
+  <a href="#" class="list-group-item">国产水果</a>
+  <a href="#" class="list-group-item">水果饮品</a>
+  <a href="#" class="list-group-item">果肉制品</a>
+    <a href="#" class="list-group-item">有机肥料</a>
+</div>
+        </div>
+        <div class="col-md-10">
+            {% block right %}
+                {% endblock %}
+        </div>
+    </div>
+    </div>
+{% endblock %}

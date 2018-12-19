@@ -1,0 +1,251 @@
+{% extends 'Reception/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+<h1>我的购物车</h1>
+    <hr>
+{% if sp_list %}
+    <input type="checkbox" id="sp_whole">全选
+{% endif %}
+    <form action="{% url 'order:order' %}" method="post">
+        {% csrf_token %}
+        {% for i in shop %}
+  <li class="list-group-item active">店铺：{{ i.manage_shop_name }}</li>
+                <table class="table">
+    <tr>
+        <th></th>
+        <th>商品名称</th>
+        <th>商品缩略图</th>
+        <th>商品单价</th>
+        <th>商品数量</th>
+        <th>商品小计</th>
+        <th>操作</th>
+    </tr>
+        {% for list in sp_list %}
+    <tr class="active sp_number sp_number{{ list.cart_id }}">
+    {% if i.manage_shop_id == list.shop_id %}
+        <td><input type="checkbox" class="sp_check" value="{{ list.cart_id }}" name="sp_che" content="{{ list.cart_id }}"></td>
+        <td>{{ list.goods_name }}</td>
+         <td><div class="or_td_img"><img src="{% static list.goods_pic %}" alt=""></div></td>
+         <td>￥{{ list.goods_price }}元</td>
+        <td><button type="button" class="sp_btn sp_btn1" id="sp_bt1" content="{{ list.goods_id }}">-</button>
+             <input type="text" value="{{ list.goods_num }}" id="sp_input" class="sp_input" content="{{ list.goods_id }}"> <button type="button" value="+" class="sp_btn sp_btn2" id="sp_bt2" content="{{ list.goods_id }}">+</button></td>
+         <td>￥<span id="sp_price" class="sp_span">{{ list.goods_sum |floatformat:0}}</span>.00元</td>
+        <td><a class="btn btn-danger sp_del" href="#" role="button" id="sp_del" content="{{ list.cart_id }}">删除</a></td>
+    </tr>
+            {% endif %}
+{#            {% empty %}#}
+{#            <tr>#}
+{#            <td colspan="6" style="text-align: center">#}
+{#                购物车没有商品，赶紧去购物吧#}
+{#            </td>#}
+{#            </tr>#}
+            {% endfor %}
+            </table>
+        {% endfor %}
+    <div>
+<input value="清空购物车" type="submit" class="btn btn-success" formaction="{% url 'shopping:shopping_w_del' %}"/>
+</div>
+    <div class="right_btn">
+    {% if sp_list %}
+<span id="sp_sum">{{ sum |floatformat:2}}</span><span>元</span>
+        <div></div>
+    {% else %}
+    {% endif %}
+        {% if sp_list %}
+<input type="submit" value="立刻下单" class="btn btn-success"  role="button" id="sp_dowm">
+        {% endif %}
+    </form>
+</div>
+</div>
+        <script>
+        $(function(){
+            /* 增加操作*/
+            var i=0
+            var input=0
+            var del=0
+            var flag=true
+            var check=0
+            var list=[]
+            $('.sp_btn2').click(function(){
+                i=$(this).index('.sp_btn2')
+                {#console.log($('.sp_input:eq('+i+')').val())#}
+                input=$('.sp_input:eq('+i+')').val()
+                $.ajax({
+                    type:"get",
+                    url:"/shopping_plus/"+$('.sp_btn2:eq('+i+')').attr('content'),
+                    dataType:'json',
+                    data:{num:input},
+                    async:true,
+                    success:function(ret){
+                        $('.sp_input:eq('+i+')').val(ret.result)
+                        $('.sp_span:eq('+i+')').html(ret.sum_one)
+                        $('#sp_sum').html(ret.sum+'.00')
+                    }
+                })
+            })
+            /* 减少操作*/
+            $('.sp_btn1').click(function(){
+                i=$(this).index('.sp_btn1')
+                {#console.log($('.sp_input:eq('+i+')').val())#}
+                input=$('.sp_input:eq('+i+')').val()
+                $.ajax({
+                    type:"get",
+                    url:"/shopping_re/"+$('.sp_btn1:eq('+i+')').attr('content'),
+                    dataType:'json',
+                    data:{num:input},
+                    async:true,
+                    success:function(ret){
+                        $('.sp_input:eq('+i+')').val(ret.result)
+                        $('.sp_span:eq('+i+')').html(ret.sum_one)
+                        $('#sp_sum').html(ret.sum+'.00')
+                    }
+                })
+            })
+            $('.sp_input').blur(function(){
+                i=$(this).index('.sp_input')
+                {#console.log($('.sp_input:eq('+i+')').val())#}
+                input=$('.sp_input:eq('+i+')').val()
+                confirm('你确定要提交数据')
+                console.log(input)
+                $.ajax({
+                    type:"get",
+                    url:"/shopping_blur/"+$('.sp_btn1:eq('+i+')').attr('content'),
+                    dataType:'json',
+                    data:{num:input},
+                    async:true,
+                    success:function(ret){
+                        $('.sp_input:eq('+i+')').val(ret.result)
+                        console.log(ret.result)
+                        $('.sp_span:eq('+i+')').html(ret.sum_one)
+                        $('#sp_sum').html(ret.sum+'.00')
+                    }
+                })
+            })
+            $('.sp_del').click(function(){
+                del=$(this).index('.sp_del')
+                $.ajax({
+                    type:'get',
+                    url:'/shopping_del/'+$('.sp_del:eq('+del+')').attr('content'),
+                    success:function(ret){
+                        console.log(ret)
+                        $('.sp_number'+ret).remove()
+                    }
+                })
+            })
+            $('#sp_whole').change(function(){
+                if(flag){
+                    $('.sp_check').prop('checked',true)
+                    $.ajax({
+                        type:'get',
+                        url:'/shopping_num/?num=1',
+                        success:function(ret){
+                            $('#sp_sum').html(ret+'元')
+                        }
+                    })
+                }
+                else {
+                    $('.sp_check').prop('checked',false)
+                    $.ajax({
+                        type:'get',
+                        url:'/shopping_num/?num=0',
+                        success:function(ret){
+                            $('#sp_sum').html(ret+'.00')
+                        }
+                    })
+                }
+                flag=!flag
+                console.log(flag)
+            })
+            $('#sp_dowm').click(function(){
+                if($('#sp_sum').html()=='0.00'){
+                    return false
+                    confirm('没有选择任何商品')
+                }
+                else if($('.sp_check').prop('checked')==true){
+                    location.replace('/order/')
+                }
+                else{
+                    $.ajax({
+                        type:'get',
+                        data:{
+                            num:1
+                        },
+                        dataType:'json',
+                        success:function(){
+                            console.log(123)
+                        }
+                    })
+                }
+            })
+            $('.sp_check').change(function(){
+                check=$(this).index('.sp_check')
+                console.log($(this).prop('checked'))
+                $.ajax({
+                    type:'get',
+                    url:'/order_check/',
+                    data:{
+                        num:$(this).attr('content'),
+                        state:$(this).prop('checked')
+                    },
+                    dataType:'json',
+                    success:function(ret){
+                        if(ret.state=='1'){
+                            var num=$('#sp_sum').html()
+                            list.push($(this).attr('content'))
+                            var sum=Number(num)+Number(ret.sum)
+                            $('#sp_sum').html(sum)
+                        }
+                        else if(ret.state=='0'){
+                            var num=$('#sp_sum').html()
+                            var sum=Number(num)-Number(ret.sum)
+                            $('#sp_sum').html(sum)
+                        }
+                    }
+                })
+            })
+
+        })
+        
+
+
+
+
+
+
+
+
+    {#$(function(){#}
+    {#    var num=1#}
+    {#    var price=$('#sp_price').text()#}
+    {#    console.log(123)#}
+    {#    $('#sp_sum').html(price)#}
+        /* 购物车减少操作*/
+        /*$('#sp_bt1').click(function(){
+            num--
+            if(num<1){
+                num=1
+            }
+            sum=num*Number(price)
+            $('#sp_input').val(num)
+            $('#sp_price').html(sum)
+        })
+        /* 购物车增加操作*/
+        /*$('#sp_bt2').click(function(){
+            num++
+            sum=num*Number(price)
+            $('#sp_input').val(num)
+            $('#sp_price').html(sum)
+        })
+        /* 购物车失去焦点操作*/
+        /*$('#sp_input').blur(function(){
+            if ($('#sp_input').val()<1){
+                $('#sp_input').val(1)
+            }
+            sum=$('#sp_input').val() * price
+            $('#sp_price').html(sum)
+        })*/
+
+   /* })*/
+    </script>
+{% endblock %}

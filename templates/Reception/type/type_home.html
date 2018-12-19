@@ -1,0 +1,58 @@
+{% extends 'Reception/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+  <a href="{% url 'type:type_home' %}" class="list-group-item active">
+    分类中心
+  </a>
+                {% for i in list1 %}
+  <a href="{% url 'type:type_home_content' i.type_id %}" class="list-group-item">{{ i.type_name }}</a>
+                {% empty %}
+ <a href="#" class="list-group-item">店铺已倒闭</a>
+                {% endfor %}
+</div>
+        </div>
+        <div class="col-md-10">
+        <ul class="list-group">
+  <li class="list-group-item active">今天热卖</li>
+</ul>
+                <div class="container type clear">
+                {% for i in list %}
+    <div>
+        <div>
+            <a href="{% url 'dtpage:dtpage' i.goods_id %}"><img src="{% static i.goods_pic %}" alt=""></a>
+        </div>
+        <p><a href="{% url 'dtpage:dtpage' i.goods_id %}">{{ i.goods_name }}</a></p>
+        <p><del class="re_gd_pc">￥{{ i.goods_oprice }}元</del>&nbsp;&nbsp;<span>￥{{ i.goods_xprice }}元</span></p>
+    </div>
+                        {% endfor %}
+    </div>
+        {% if list.has_previous %}
+        <a class="btn btn-default" href="/type_home?page={{ list.previous_page_number }}" role="button">上一页</a>
+    {% endif %}
+    {% if list.has_next %}
+        <a class="btn btn-default" href="/type_home?page={{ list.next_page_number }}" role="button">下一页</a>
+    {% endif %}
+    <div>
+    当前第{{ count1 }}页，共{{ list.paginator.num_pages }}页 <input type="text" class="gd_search" id="gd_input">  <a class="btn btn-default" href="#" role="button" id="fanyi">翻页</a>
+    </div>
+    <script>
+        $(function(){
+            $('#fanyi').click(function(){
+                var a=$('#gd_input').val()
+                if(a>{{ list.paginator.num_pages }}){
+                    a={{ list.paginator.num_pages }}
+                }
+                str="/type_home?page="+a
+                $('#fanyi').attr('href',str)
+                console.log(str)
+            })
+        })
+    </script>
+        </div>
+    </div>
+    </div>
+{% endblock %}

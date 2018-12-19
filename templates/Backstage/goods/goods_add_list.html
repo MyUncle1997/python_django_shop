@@ -1,0 +1,90 @@
+{% extends 'Backstage/goods_base.html' %}
+{% load static %}
+{% block right %}
+    <body class="layui-anim layui-anim-up">
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">商品管理</a>
+        <a href="">商品列表</a>
+      </span>
+    </div>
+    <div class="x-body">
+      <table class="layui-table">
+        <thead>
+          <tr>
+		    <th>商品id</th>
+              <th>图片</th>
+            <th>商品编号</th>
+            <th>商品名称</th>
+            <th>商品原价</th>
+            <th>商品现价</th>
+            <th>商品库存</th>
+			<th>商品存储方法</th>
+            <th>操作</th>
+			</tr>
+        </thead>
+        <tbody>
+        {% for i in list %}
+          <tr>
+            <td>{{ i.goods_id }}</td>
+            <td><div class="gd_ad_img"><img src="{% static  i.goods_pic %}" alt=""></div></td>
+			 <td>{{ i.goods_num }}</td>
+            <td>{{ i.goods_name }}</td>
+            <td>{{ i.goods_oprice }}</td>
+            <td>{{ i.goods_xprice }}</td>
+            <td>{{ i.goods_count }}</td>
+			<td>{{ i.goods_method }}</td>
+            <td >
+				<a href="{% url 'manage:manage_add_list_modify' i.goods_id %}">编辑</a> <a href="{% url 'manage:manage_add_list_del' i.goods_id %}">删除</a>
+                {% if i.goods_ishow == 0 %}
+                    <a href="{% url 'manage:manage_add_up' i.goods_id %}">上架</a>
+                    {% else %}
+                    <a href="{% url 'manage:manage_add_dowm' i.goods_id %}">下架</a>
+				{% endif %}
+            </td>
+          </tr>
+             </tbody>
+        {% endfor %}
+        <tr>
+            <td colspan="9">
+                <ul class="pagination">
+                    {% if list.has_previous %}
+                    <li><a href="/manage_add_list?page={{ list.previous_page_number }}">上一页</a></li>
+                    {% else %}
+                    {% endif %}
+{#                {% for num in list.paginator.page_range %}#}
+{#                {% if num == current %}#}
+{#                <li class="active"><a href="/manage_add_list?page={{ num }}">{{ num }}</a></li>#}
+{#                {% else %}#}
+{#                <li><a href="/manage_add_list?page={{ num }}"></a>{{ num }}</li>#}
+{#                {% endif %}#}
+{#                {% endfor %}#}
+                {% if list.has_next %}
+                <li><a href="/manage_add_list?page={{ list.next_page_number }}">下一页</a></li>
+                {% else %}
+                {% endif %}
+                </ul>
+            </td>
+        </tr>
+      <tr>
+          <td colspan="9">
+              当前第{{ gurrent }}页，共{{ paginator.num_pages }}页 <input type="text" class="gd_search" id="gd_input">  <a class="btn btn-default" href="#" role="button" id="fanyi">翻页</a>
+          </td>
+      </tr>
+      </table>
+
+    </div>
+    <script>
+        $(function(){
+            $('#fanyi').click(function(){
+                var a=$('#gd_input').val()
+                if(a>{{ paginator.num_pages }}){
+                    a={{ paginator.num_pages }}
+                }
+                str="/manage_add_list?page="+a
+                $('#fanyi').attr('href',str)
+                console.log(str)
+            })
+        })
+    </script>
+{% endblock %}

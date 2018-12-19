@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>店铺选择</title>
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/css.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+
+</head>
+<body>
+<div class="container">
+<div class="row">
+    {% for shop in list %}
+  <div class="col-sm-6 col-md-3">
+    <div class="thumbnail">
+        <div class="shop_log">
+      <img src="{% static shop.manage_shop_pic %}" alt="店铺GG">
+            </div>
+      <div class="caption">
+        <h3>{{ shop.manage_shop_name }}</h3>
+        <p>{{ shop.manage_shop_username }}</p>
+        <p><a href="{% url 'manage:manage_home' shop.manage_shop_id %}" class="btn btn-primary" role="button">进入后台</a> <a href="{% url 'manage:manage_login' %}" class="btn btn-default" role="button">退出登录</a></p>
+      </div>
+    </div>
+  </div>
+    {% endfor %}
+<div class="col-sm-6 col-md-3">
+    <div class="thumbnail">
+        <div class="shop_log">
+      <img src="{% static 'images/1.jpg' %}" alt="店铺GG">
+            </div>
+      <div class="caption">
+        <h3>新开店铺</h3>
+        <p>提示：每个商家最多开五个店铺</p>
+        <p><a href="{% url 'shop:shop_add' %}" class="btn btn-primary" role="button">我要开铺</a> <a href="{% url 'manage:manage_login' %}" class="btn btn-default" role="button">退出登录</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

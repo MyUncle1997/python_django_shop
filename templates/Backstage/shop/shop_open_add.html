@@ -1,0 +1,74 @@
+{% extends 'Reception/base.html' %}
+{% block content %}
+    <div class="container">
+    <h2>买家免费开店</h2>
+        <hr>
+    <form class="form-horizontal" action="{% url 'shop:shop_add_han' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">店铺名称：</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="inputEmail3" placeholder="输入你的店铺名" name="shop_name">
+    </div>
+  </div>
+        <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">商家昵称：</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="inputEmail3" placeholder="输入你的商家昵称" name="shop_username">
+    </div>
+  </div>
+        <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">店铺地址：</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="inputEmail3" placeholder="输入你的商家地址" name="shop_address">
+    </div>
+  </div>
+        <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">店铺LOGO：</label>
+    <div class="col-sm-6">
+      <div class="form-group">
+    <label for="exampleInputFile"></label>
+    <input type="file" id="zx_img" name="shop_img">
+    <p class="help-block">请上传80x80的分辨率图片</p>
+  </div>
+    </div>
+  </div>
+            <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">你上传的图片：</label>
+    <div class="col-sm-8">
+      <div class="layui-input-inline">
+       <div class="gd_ad_mg" id="gd_ad_mg">
+            <img id="img_preview" src="" alt="">
+        </div>
+          </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-success">免费开店</button>
+    </div>
+  </div>
+</form>
+    </div>
+            <script>
+    $(function(){
+        //上传图片选择文件改变后刷新预览图
+        $("#zx_img").change(function (e) {
+        //获取目标文件
+        var file = e.target.files || e.dataTransfer.files;
+        //如果目标文件存在
+        if (file) {
+        //定义一个文件阅读器
+        var reader = new FileReader();
+        //文件装载后将其显示在图片预览里
+        reader.onload = function () {
+            $('#gd_ad_mg').css('display','block')
+        $("#img_preview").attr("src", this.result);
+        }
+        //装载文件
+        reader.readAsDataURL(file[0]);
+        }
+        });
+    })
+    </script>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'Backstage/goods_base.html' %}
+{% load static %}
+{% block right %}
+<span href="#" class="list-group-item default user_show clear">
+    <span>日期：{{ list.order_time }}</span><span>订单编号：{{ list.order_num }}</span>
+</span>
+    <div class="user_tou clear">
+        <div>商品</div>
+        <div>名称</div>
+        <div>单价</div>
+        <div>买家</div>
+        <div>评论内容</div>
+    </div>
+             {% for i in num %}
+                                <div class="user_page clear">
+                                <div><img src="{% static i.goods_pic %}" alt=""></div>
+                                <div>{{ i.goods_name }}</div>
+                                <div>{{ i.manage_price }}</div>
+                                <div>{{ request.session.user }}</div>
+                                {% for sum in count %}
+                                        {% if i.order_page_id == sum.order_page_id %}
+                                        <div>{{ sum.comment_body }}</div>
+                                        {% endif %}
+                                        {% endfor %}
+                                </div>
+             {% endfor %}
+
+     {% endblock %}

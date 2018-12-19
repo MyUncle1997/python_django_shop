@@ -1,0 +1,17 @@
+    <div class="container">
+        <div class="logo"><a href="{% url 'manage:manage_home' request.session.shop_id %}">全球生鲜卖家管理后台</a></div>
+        <div class="left_open">
+            <i title="展开左侧栏" class="iconfont">&#xe699;</i>
+        </div>
+        <ul class="layui-nav right" lay-filter="">
+          <li class="layui-nav-item">
+            <a href="javascript:;">{{ request.session.manage_user }}</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                <dd><a href="{% url 'manage:manage_shop_home' %}">选择店铺</a></dd>
+              <dd><a href="{% url 'manage:manage_login_out' %}">退出</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item to-index"><a href="{% url 'goods:goods' %}">前台首页</a></li>
+        </ul>
+
+    </div>

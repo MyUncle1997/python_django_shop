@@ -1,0 +1,35 @@
+{% extends 'Backstage/goods_base.html' %}
+{% block right %}
+
+  <body>
+    <div class="x-body">
+        <form class="layui-form" action="{% url 'manage:manage_leibie_han' %}" method="post">
+            {% csrf_token %}
+          <div class="layui-form-item">
+              <label for="username" class="layui-form-label">
+                  <span class="x-red">*</span>类型名称
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="type_name" name="name" required=""
+                  autocomplete="off" class="layui-input" PlaceHolder="请添加商品类型">
+              </div>
+          </div>
+{#          <div class="layui-form-item">#}
+{#              <label for="phone" class="layui-form-label">#}
+{#                  <span class="x-red">*</span>类型排序#}
+{#              </label>#}
+{#              <div class="layui-input-inline">#}
+{#                  <input type="text" id="type_sort" name="type_sort" required=""#}
+{#                  autocomplete="off" class="layui-input" PlaceHolder="请添加类型排序">#}
+{#              </div>#}
+{#          </div>#}
+         <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+              </label>
+              <button  class="layui-btn" lay-filter="add" lay-submit="">
+                  添加商品类型
+              </button>
+          </div>
+      </form>
+    </div>
+{% endblock %}

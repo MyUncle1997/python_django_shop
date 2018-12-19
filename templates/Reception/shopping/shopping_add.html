@@ -1,0 +1,70 @@
+{% extends 'Reception/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+<h1>我的购物车</h1>
+    <hr>
+    <table class="table">
+    <tr>
+        <th>商品名称</th>
+        <th>商品缩略图</th>
+        <th>商品单价</th>
+        <th>商品数量</th>
+        <th>商品小计</th>
+        <th>操作</th>
+    </tr>
+    <tr class="active sp_number">
+        <td>{{ list.goods_name }}</td>
+         <td><div class="or_td_img"><img src="{% static list.goods_pic %}" alt=""></div></td>
+         <td>￥{{ list.goods_xprice }}元</td>
+         <td><button class="sp_btn" id="sp_bt1">-</button>
+             <input type="text" value="1" id="sp_input"> <button class="sp_btn" id="sp_bt2">+</button></td>
+         <td>￥<span id="sp_price">{{ list.goods_xprice }}</span>元</td>
+        <td><button class="btn btn-danger">删除</button></td>
+
+    </tr>
+    </table>
+    <div>
+<button class="btn btn-success">清空购物车</button>
+</div>
+    <div class="right_btn">
+<h3 id="sp_sum">{{ list.goods_xprice }}</h3>
+<button class="btn btn-success"><a href="{% url 'order:order' %}">立刻下单</a></button>
+</div>
+</div>
+        <script>
+    $(function(){
+        var num=1
+        var price=$('#sp_price').text()
+        console.log(123)
+        /* 购物车减少操作*/
+        $('#sp_bt1').click(function(){
+            num--
+            if(num<1){
+                num=1
+            }
+            sum=num*Number(price)
+            $('#sp_input').val(num)
+            $('#sp_price').html(sum)
+            $('#sp_sum').html(sum)
+        })
+        /* 购物车增加操作*/
+        $('#sp_bt2').click(function(){
+            num++
+            sum=num*Number(price)
+            $('#sp_input').val(num)
+            $('#sp_price').html(sum)
+            $('#sp_sum').html(sum)
+        })
+        /* 购物车失去焦点操作*/
+        $('#sp_input').blur(function(){
+            if ($('#sp_input').val()<1){
+                $('#sp_input').val(1)
+            }
+            sum=$('#sp_input').val() * price
+            $('#sp_price').html(sum)
+            $('#sp_sum').html(sum)
+        })
+    })
+    </script>
+{% endblock %}

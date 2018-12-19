@@ -1,0 +1,27 @@
+{% extends 'Reception/users/user_base.html' %}
+{% load static %}
+{% block content_user %}
+<h2>物流信息</h2>
+    <hr>
+    <ul class="list-group">
+  <li class="list-group-item active">物流公司：{{ logistics.logistics_name }}</li>
+  <li class="list-group-item">物流单号：{{ logistics.logistics_num }}</li>
+  <li class="list-group-item active">物流跟踪</li>
+    <li class="list-group-item">已失踪</li>
+
+</ul>
+             <span href="#" class="list-group-item default user_show clear">
+    <span>日期：{{ list.order_time }}</span><span>订单编号：{{ list.order_num }}
+  </span>
+         </span>
+             {% for i in num %}
+                                <div class="user_page clear">
+                                <div><img src="{% static i.goods_pic %}" alt=""></div>
+                                <div>{{ i.goods_name }}</div>
+                                <div>{{ i.manage_price }}</div>
+                                <div>{{ i.goods_num }}</div>
+                                <div>{{ i.goods_sum }}</div>
+                                </div>
+             {% endfor %}
+
+{% endblock %}

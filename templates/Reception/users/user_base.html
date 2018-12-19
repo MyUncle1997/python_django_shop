@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/css.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    {% block style %}
+    {% endblock %}
+    <title>个人中心</title>
+</head>
+<body>
+{% include 'Reception/tou.html' %}
+       <div class="container">
+    <div class="row">
+        <div class="col-md-2">
+<ul class="list-group">
+  <li class="list-group-item">
+    <span class="badge">会员：{{ request.session.user }}</span>
+      <a href="{% url 'users:user_order'%}">我的订单</a>
+  </li>
+    <li class="list-group-item">
+    <span class="badge"></span>
+      <a href="{% url 'users:user_modify' %}">密码修改</a>
+  </li>
+    <li class="list-group-item">
+    <span class="badge"></span>
+      <a href="{% url 'users:user_address' %}">收货地址</a>
+  </li>
+        <li class="list-group-item">
+    <span class="badge"></span>
+      <a href="{% url 'users:user_core' %}">个人信息</a>
+  </li>
+     <li class="list-group-item">
+    <span class="badge"></span>
+      <a href="{% url 'users:user_collection' %}">我的收藏</a>
+  </li>
+</ul>
+        </div>
+                <div class="col-md-10">
+                    {% block content_user %}
+                        {% endblock %}
+
+    </div>
+    </div>
+       </div>
+{% include 'Reception/di.html' %}
+</body>
+</html>

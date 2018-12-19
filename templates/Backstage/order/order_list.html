@@ -1,0 +1,47 @@
+{% extends 'Backstage/goods_base.html' %}
+{% block right %}
+    <h2>订单管理</h2>
+    <hr>
+    <table class="table table-bordered">
+    <tr class="success">
+        <th>订单id</th>
+        <th>订单编号</th>
+        <th>下单时间</th>
+        <th>订单总金额</th>
+        <th>订单状态</th>
+        <th>操作</th>
+    </tr>
+        {% for i in list %}
+    <tr>
+        <td>{{ i.order_id }}</td>
+        <td>{{ i.order_num }}</td>
+        <td>{{ i.order_time }}</td>
+        <td>￥{{ i.order_sum }}元</td>
+    {% if i.order_state == 10 %}
+        <td>待付款</td>
+    {% elif i.order_state == 0 %}
+        <td>待发货</td>
+    {% elif i.order_state == 1 %}
+    <td>已发货</td>
+            {% elif i.order_state == 2 %}
+            <td>已确认收货，等待评价</td>
+        {% else %}
+        <td>已确认收货，已评价</td>
+    {% endif %}
+    {% if i.order_state == 10 %}
+    <td>待付款&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'manage:manage_order_page' i.order_id %}">查看详情</a></td>
+        {% elif i.order_state == 0 %}
+        <td><a href="{% url 'manage:manage_logistics' i.order_id %}">发货</a>&nbsp;&nbsp;&nbsp;<a href="{% url 'manage:manage_order_page' i.order_id %}">查看订单详情</a></td>
+    {% elif i.order_state == 1 %}
+    <td>已发货&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'manage:manage_order_page' i.order_id %}">查看订单详情</a></td>
+            {% elif i.order_state == 2 %}
+            <td>已确认收货，待评价&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'manage:manage_order_page' i.order_id %}">查看详情</a></td>
+            {% else %}
+            <td>&nbsp;<a href="{% url 'manage:manage_order_comment' i.order_id %}">查看评价内容</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'manage:manage_order_page' i.order_id %}">查看订单详情</a></td>
+    {% endif %}
+    </tr>
+            {% empty %}
+            还没有订单？赶紧去卖吧
+    {% endfor %}
+    </table>
+{% endblock %}

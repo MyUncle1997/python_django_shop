@@ -1,0 +1,47 @@
+{% extends 'Reception/users/user_base.html' %}
+{% block content_user %}
+<form class="form-horizontal" action="{% url 'users:user_modify_han' %}" method="post">
+{% csrf_token %}
+<div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">当前用户为{{ request.session.user }}</label>
+    <div class="col-sm-10">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">输入当前的密码：</label>
+    <div class="col-sm-8">
+      <input type="password" class="form-control" id="inputEmail3" placeholder="请输入你当前的密码" name="opass">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">输入要修改的密码</label>
+    <div class="col-sm-8">
+      <input type="password" class="form-control" id="user_pass1" placeholder="输入你要修改的密码" name="new_pass">
+    </div>
+  </div>
+      <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
+    <div class="col-sm-8">
+      <input type="password" class="form-control" id="user_pass2" placeholder="确认输入你要修改的密码" name="new_pass2">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default" id="user_sub">确认修改</button>
+    </div>
+  </div>
+</form>
+    <script>
+    $(function(){
+        $('#user_sub').click(function(){
+            if($('#user_pass1').val()==$('#user_pass2').val()){
+                return true
+            }
+            else{
+               confirm('两次密码输入不一致')
+                return false
+            }
+        })
+    })
+    </script>
+{% endblock %}

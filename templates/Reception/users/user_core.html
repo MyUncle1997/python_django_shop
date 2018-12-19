@@ -1,0 +1,28 @@
+{% extends 'Reception/users/user_base.html' %}
+{% load static %}
+{% block content_user %}
+<ul class="list-group">
+{% if list %}
+  <li class="list-group-item active">个人资料</li>
+  <li class="list-group-item">用户名：{{ request.session.user }}</li>
+    <li class="list-group-item">本人头像：       <div class="user_core_mg" >
+            <img  src="{% static list.pic %}" alt="">
+        </div>
+    </li>
+  <li class="list-group-item">邮箱：{{ list.email }}</li>
+  <li class="list-group-item">性别：{{ list.sex }}</li>
+  <li class="list-group-item">年龄：{{ list.age }}</li>
+    <li class="list-group-item">个人简介：{{ list.body }}</li>
+    {% else %}
+      <li class="list-group-item">用户名：{{ request.session.user }}</li>
+    <li class="list-group-item">图片：空</li>
+  <li class="list-group-item">邮箱：空</li>
+  <li class="list-group-item">性别：空</li>
+  <li class="list-group-item">年龄：空</li>
+    <li class="list-group-item">个人简介：空</li>
+    {% endif %}
+    <br>
+<a class="btn btn-danger" href="{% url 'users:user_core_modify' %}" role="button">我要修改</a>
+
+</ul>
+{% endblock %}

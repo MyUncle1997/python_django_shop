@@ -1,0 +1,36 @@
+{% extends 'Reception/base.html' %}
+{% block content %}
+<div class="container">
+<h1>你的订单已提交，请马上付款！我们尽快为你发货</h1>
+    <hr>
+        <form action="{% url 'play:payorder' %}" method="post">
+        {% csrf_token %}
+    <table class="table">
+    <tr>
+        <th>订单编号</th>
+        <th>下单时间</th>
+        <th>应付总金额</th>
+        <th>收货地址：</th>
+        <th>买家昵称</th>
+    </tr>
+    <tr class="active sp_number">
+        <td>{{ list.order_num }}</td>
+         <td>{{ list.order_time }}</td>
+         <td>￥{{ list.order_sum }}元</td>
+         <td>{{ address.address_name }}</td>
+         <td>{{ request.session.user }}</td>
+    </tr>
+    </table>
+    <div>
+        <a class="btn btn-success" href="{% url 'users:user_order'%}" role="button">查看订单详情</a>
+</div>
+         <input type="hidden" value="{{ list.order_sum }}" name="order_sum">
+        <input type="hidden" value="{{ list.order_num }}" name="order_num">
+        <input type="hidden" value="{{ list.order_id }}" name="order_id">
+    <div class="right_btn">
+        <input value="支付宝付款" type="submit" class="btn btn-success">
+</div>
+
+</form>
+</div>
+{% endblock %}

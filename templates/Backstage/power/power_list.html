@@ -1,0 +1,95 @@
+{% extends 'Backstage/goods_base.html' %}
+{% block right %}
+    <h2>权限管理</h2>
+    <hr>
+          <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so" action="" method="post">
+            {% csrf_token %}
+          <input class="layui-input" placeholder="权限名称" name="name" id="start">
+          <input class="layui-input" placeholder="权限路由" name="url" id="end">
+          <input type="text" name="url_name"  placeholder="命名空间" autocomplete="off" class="layui-input">
+          <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+      </div>
+     <xblock>
+        <button class="layui-btn" onclick="x_admin_show('添加用户','{% url 'manage:manage_power_add' %}',600,400)"><i class="layui-icon"></i>添加</button>
+      </xblock>
+    <table class="table table-bordered">
+    <tr class="success">
+        <th>权限id</th>
+        <th>权限昵称</th>
+        <th>权限路由</th>
+        <th>命名空间</th>
+        <th>操作</th>
+    </tr>
+        {% for i in list %}
+    <tr>
+        <td>{{ i.id }}</td>
+        <td>{{ i.power_name }}</td>
+        <td>{{ i.power_url }}</td>
+        <td>{{ i.powe_namespace }}</td>
+        <td>
+              <a title="编辑"  onclick="x_admin_show('编辑','{% url 'manage:manage_power_modify' i.id %}',600,400)" href="javascript:;">
+                <i class="layui-icon">&#xe642;</i>
+              </a>
+              <a title="删除" onclick="member_del(this,'{{ i.id }}')" href="javascript:;">
+                <i class="layui-icon">&#xe640;</i>
+              </a></td>
+    {% endfor %}
+    </table>
+     {% if list.has_previous %}
+        <a class="btn btn-default" href="/manage_power_list?page={{ list.previous_page_number }}" role="button">上一页</a>
+    {% endif %}
+    {% if list.has_next %}
+        <a class="btn btn-default" href="/manage_power_list?page={{ list.next_page_number }}" role="button">下一页</a>
+    {% endif %}
+    <div>
+    当前第{{ gurrent }}页，共{{ list.paginator.num_pages }}页 <input type="text" class="gd_search" id="gd_input">  <a class="btn btn-default" href="#" role="button" id="fanyi">翻页</a>
+    </div>
+    <script>
+    function member_del(obj,id){
+          layer.confirm('确认要删除吗？',function(){
+              //发异步删除数据
+              $.ajax({
+                  type:'get',
+                  url:'/manage_power_del/',
+                  data:{
+                      num:id
+                  },
+                  success:function(ret){
+                      if(ret=='1'){
+                          $(obj).parents("tr").remove();
+              layer.msg('已删除!',{icon:1,time:1000});
+                      }
+                      if(ret=='0'){
+                          layer.msg('删除失败!',{icon:1,time:1000});
+                      }
+                  }
+              })
+          });
+          $('#fanyi').click(function(){
+                var a=$('#gd_input').val()
+                if(a>{{ list.paginator.num_pages }}){
+                    a={{ list.paginator.num_pages }}
+                }
+                str="/goods?page="+a
+                $('#fanyi').attr('href',str)
+                console.log(str)
+            })
+
+      }
+    </script>
+    <script>
+    $(function(){
+        $('#fanyi').click(function(){
+            var a=$('#gd_input').val()
+            if(a>{{ list.paginator.num_pages }}){
+                a={{ list.paginator.num_pages }}
+            }
+            str="/manage_power_list?page="+a
+            $('#fanyi').attr('href',str)
+            console.log(str)
+        })
+    })
+    </script>
+{% endblock %}

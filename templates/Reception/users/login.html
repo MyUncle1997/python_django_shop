@@ -1,0 +1,96 @@
+{% extends 'Reception/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+    <h2>会员登录</h2>
+    <hr>
+                <div class="releft">
+                    <img src="{% static 'images/huiyuan.jpg' %}" alt="">
+                </div>
+                        <div class="reright">
+                            <form class="form-horizontal box" id="user_form" method="post">
+                                {% csrf_token %}
+              <div class="form-group">
+                <label for="inputEmail3" class="col-sm-4 control-label">昵称：</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="inputEmail3" placeholder="输入你的昵称" name="user">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputPassword3" class="col-sm-4 control-label">密码：</label>
+                <div class="col-sm-8">
+                  <input type="password" class="form-control" id="inputPassword3" placeholder="输入你的密码" name="passwd">
+                </div>
+              </div>
+                                <input type="hidden" value="{{ next }}" name="next">
+                                 <div class="form-group">
+                <label for="inputPassword3" class="col-sm-4 control-label">验证码：</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="code_input" placeholder="输入你的验证码" name="code"><span id="code_state"></span>
+                </div>
+              </div>
+                                 <div class="form-group">
+                <label for="inputPassword3" class="col-sm-4 control-label"></label>
+                <div class="col-sm-8">
+                    <img src="/Code/?" alt="" id="code_img">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn btn-success" id="code">看不清楚？换一张</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-10">
+                  <button type="button" class="btn btn-success" id="user_login">登录</button><span id="user_show"></span>
+                </div>
+              </div>
+            </form>
+    </div>
+    </div>
+    <script>
+    $(function(){
+        $('#code').click(function(){
+            $('#code_img').attr('src','/Code/?'+Math.ceil(Math.random()*10))
+        })
+       /* $('#code_input').blur(function(){
+            $.ajax({
+                type:'get',
+                url:'/user_code',
+                data:{
+                    text:$('#code_input').val()
+                },
+                success:function(ret){
+                    console.log(ret)
+                    if(ret=='1'){
+                        $('#code_state').html('验证码正确')
+                    }
+                   if(ret=='0'){
+                        $('#code_state').html('验证码错误')
+                    }
+                }
+            })
+        })*/
+        $('#user_login').click(function(){
+            $.ajax({
+                type:'post',
+                url: '/login_handel/',
+                data:$('#user_form').serialize(),
+                dataType:'json',
+                success:function(ret){
+                    if(ret.num=='0'){
+                        $('#user_show').html(ret.text)
+                    }
+                    else if(ret.num=='1'){
+                        $('#user_show').html(ret.text)
+                    }
+                     else if(ret.num=='2'){
+                        $('#user_show').html(ret.text)
+                    }
+                     else if(ret.num=='3'){
+                         location.replace('/goods')
+                    }
+                    else if(ret.num=='4'){
+                        location.replace(ret.text)
+                    }
+                }
+            })
+        })
+    })
+    </script>
+{% endblock %}

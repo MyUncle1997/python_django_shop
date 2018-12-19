@@ -1,0 +1,227 @@
+{% extends 'Reception/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="dtpage_bar">
+    <a href="{% url 'goods:goods' %}">首页</a>&nbsp;>&nbsp;<span>{{ list.goods_name }}</span>
+    </div>
+<div class="row" id="dt_row">
+    <div class="col-md-5">
+        <div class="dtpage_img">
+        <img src="{% static list.goods_pic %}" alt="">
+        </div>
+    </div>
+    <div class="col-md-7 dt_right">
+        <div class="dt_right_h2" role="alert">
+        <h2>{{ list.goods_name }}</h2>
+        </div>
+        <div class="dt_right_p" role="alert">
+        <p>{{ list.goods_infro }}</p>
+    </div>
+        <div class="alert alert-info dtpage_right" role="alert">
+            价格：￥<span><h2 id="dt_price">{{ list.goods_xprice }}</h2></span>元  原价￥<span><s id="dt_small_pc">{{ list.goods_oprice }}</s></span>
+        </div>
+        <div class="dt_delivery" role="alert">
+            配送地：<span>{{ list.goods_address }}</span>
+        </div>
+         <div class="dt_delivery" role="alert">
+            库存量：<span id="dt_count">{{ list.goods_count }}</span>
+        </div>
+        <div class="dt_storage" role="alert">
+            储存方法：<span>{{ list.goods_method }}</span>
+        </div>
+                        <div class="dt_num" role="alert">
+                    {% for i in pur_num %}
+                        <span>已有<span>{{ i.num }}</span>人购买</span>
+                        {% empty %}
+                        <span>已有0人购买</span>
+                    {% endfor %}
+        </div>
+        <div class="dt_number">
+            <form method="post" id="dt_form">
+            {% csrf_token %}
+           数量：<span><button type="button" id="dt_bt1">-</button>&nbsp;<input type="text" value="1" id="dt_input" name="goods_num">&nbsp;<button type="button" id="dt_bt2">+</button></span>
+                <a class="btn btn-info dt_coll" role="button">立刻收藏</a><span id="dt_collshow"></span>
+            <input type="hidden" value="{{ list.manager_id }}" name="manager_id">
+                <input type="hidden" value="{{ list.goods_id }}" name="goods_id">
+                <input type="hidden" value="{{ request.session.user_id }}" name="user_id">
+            <input type="hidden" value="{{ list.goods_name }}" name="goods_name">
+            <input type="hidden" value="{{ list.goods_pic }}" name="goods_pic">
+            <input type="hidden" value="{{ list.goods_xprice }}" name="goods_price">
+                <input type="hidden" value="{{ list.shop_id }}" name="shop_id" >
+        </div>
+        <div class="dt_place">
+        <button type="button" class="btn btn-success"  id="dt_cart">加入购物车</button>
+            </form>
+            <form action="{% url 'order:order_dowm' %}" method="post">
+                {% csrf_token %}
+            <input type="hidden" value="1" name="num" id="hidd" >
+                <input type="hidden" value="{{ list.goods_id }}" name="goods_id" >
+                <input type="hidden" value="{{ list.shop_id }}" name="shop_id" >
+            <input type="submit" value="立刻下单" class="btn btn-danger" id="dt_submit">
+            </form>
+        </div>
+    </div>
+</div>
+    <div class="row">
+    <div class="col-md-4">
+         <div class="alert alert-success dtpage_right" role="alert">
+            其他商品
+        </div>
+        <div class="container-filter">
+            {% for i in count %}
+            <div class="shuiguo clear">
+                <div class="shuiguo_img">
+                    <a href="{% url 'dtpage:dtpage' i.goods_id %}"><img src="{% static i.goods_pic %}" alt=""></a>
+                </div >
+                <div class="shuiguo_right">
+                <a href="{% url 'dtpage:dtpage' i.goods_id %}">{{ i.goods_name }}</a>
+                <h4>￥{{ i.goods_xprice }}</h4>
+                </div>
+            </div>
+            {% endfor %}
+          <a href="#" class="list-group-item active">
+    店铺水果分类
+  </a>
+                {% for i in re_ty %}
+  <a href="{% url 'shop:shop_home_content' i.shop_id i.type_id %}" class="list-group-item">{{ i.type_name }}</a>
+                {% empty %}
+ <a href="#" class="list-group-item">店铺已倒闭</a>
+                {% endfor %}
+{#                       <div class="shuiguo clear">#}
+{#                <div class="shuiguo_img">#}
+{#                    <img src="{% static 'images/2.jpg' %}" alt="">#}
+{#                </div >#}
+{#                <div class="shuiguo_right">#}
+{#                <h3>西瓜</h3>#}
+{#                <h4>￥20</h4>#}
+{#                </div>#}
+{#            </div>#}
+{#                        <div class="shuiguo clear">#}
+{#                <div class="shuiguo_img">#}
+{#                    <img src="{% static 'images/3.jpg' %}" alt="">#}
+{#                </div >#}
+{#                <div class="shuiguo_right">#}
+{#                <h3>西瓜</h3>#}
+{#                <h4>￥20</h4>#}
+{#                </div>#}
+{#            </div>#}
+{#                        <div class="shuiguo clear">#}
+{#                <div class="shuiguo_img">#}
+{#                    <img src="{% static 'images/4.jpg' %}" alt="">#}
+{#                </div >#}
+{#                <div class="shuiguo_right">#}
+{#                <h3>西瓜</h3>#}
+{#                <h4>￥20</h4>#}
+{#                </div>#}
+{#            </div>#}
+        </div>
+    </div>
+{#        <div class="col-md-1">#}
+{##}
+{#    </div>#}
+        <div class="col-md-8">
+            <div class="dt_col-8">
+             <div class="alert alert-success dtpage_right1" role="alert">
+            <button class="btn btn-default" id="dt_into">商品简介</button><button class="btn btn-default" id="dt_comment">评论{{ count_comment }}条</button>
+        </div>
+                <div class="dt_page">
+                    {{ list.goods_body|safe}}
+                </div>
+            <div class="dt_comment_body">
+            {% if num %}
+                {% for i in num %}
+                <div class="dt_p clear">
+                    <div class="dt_le_img"><img src="{% static i.pic %}" alt=""></div><span>会员：{{ i.username }}</span><span>评价内容：{{ i.comment_body }}</span><span class="sp clear">评论时间:{{ i.comment_time }}</span>
+                </div>
+                {% endfor %}
+            {% else %}
+            {% endif %}
+            </div>
+            </div>
+    </div>
+
+    </div>
+</div>
+    <script>
+    $(function(){
+        /* 数量加减*/
+        var num=1
+        var price=$('#dt_price').text()
+        var old_price=$('#dt_small_pc').text()
+        var count=$('#dt_count').text()
+        $('#dt_bt1').click(function(){
+            num--
+            if(num<1){
+                num=1
+            }
+            sum=num*Number(price)
+            sum_old=num*Number(old_price)
+            $('#dt_input').val(num)
+            $('#hidd').val(num)
+            $('#dt_price').html(sum)
+            $('#dt_small_pc').html(sum_old)
+        })
+        $('#dt_bt2').click(function(){
+            num++
+            if(num>count){
+                num=count
+            }
+            sum=num*Number(price)
+            sum_old=num*Number(old_price)
+            $('#dt_input').val(num)
+            $('#hidd').val(num)
+            $('#dt_price').html(sum)
+            $('#dt_small_pc').html(sum_old)
+        })
+        $('#dt_input').blur(function(){
+            if ($('#dt_input').val()<1){
+                $('#dt_input').val(1)
+            }
+            sum=$('#dt_input').val() * price
+            sum_old=$('#dt_input').val() * old_price
+            $('#dt_price').html(sum)
+            $('#hidd').val($('#dt_input').val())
+            $('#dt_small_pc').html(sum_old)
+        })
+        /* 收藏功能*/
+        $('.dt_coll').click(function(){
+            $.ajax({
+                type:'get',
+                url:'/dtpage_collection/'+{{ list.goods_id }},
+                dataType:'json',
+                async:true,
+                success:function(ret){
+                    $('#dt_collshow').html(ret.text)
+                }
+
+            })
+        })
+        $('#dt_comment').click(function(){
+            console.log('123')
+            $('.dt_page').css('display','none')
+            $('.dt_comment_body').css('display','block')
+        })
+        $('#dt_into').click(function(){
+            $('.dt_page').css('display','block')
+            $('.dt_comment_body').css('display','none')
+        })
+        $('#dt_cart').click(function(){
+            $.ajax({
+                type:'post',
+                url:'{% url 'shopping:shopping_add' %}',
+                data:$('#dt_form').serialize(),
+                dataType: 'json',
+                success:function(ret){
+                    if(ret==1){
+                        $('#dt_collshow').html('添加购物车成功')
+                    }
+                    if(ret==0){
+                        $('#dt_collshow').html('请登录再添加')
+                    }
+                }
+            })
+        })
+    })
+    </script>
+{% endblock %}

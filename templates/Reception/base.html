@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/css.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    {% block style %}
+    {% endblock %}
+    <title>商店</title>
+</head>
+<body>
+{% include 'Reception/tou.html' %}
+{% block content %}
+
+{% endblock %}
+{% include 'Reception/di.html' %}
+{% block script %}
+{% endblock %}
+</body>
+</html>
